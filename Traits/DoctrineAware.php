@@ -19,6 +19,11 @@ trait DoctrineAware
      * @var ManagerRegistry
      */
     protected $doctrine;
+    
+    /**
+     * @var Array of \Doctrine\Common\Persistence\ObjectManager
+     */
+    private $managers;
 
     /**
      * Returns the Doctrine registry manager.
@@ -40,4 +45,24 @@ trait DoctrineAware
     {
         $this->doctrine = $doctrine;
     }
+    
+    
+    /**
+     *
+     * Gets a 'named' object manager.
+     *
+     * @param string $name The object manager name (null for the default one).
+     *
+     * @return \Doctrine\Common\Persistence\ObjectManager
+     *
+     */
+    private function getManager($name = null)
+    {
+        if ($this->managers[$name] == null) {
+            $this->managers[$name] = $this->doctrine->getManager($name);
+        }
+
+        return $this->managers[$name];
+    }
+
 }
